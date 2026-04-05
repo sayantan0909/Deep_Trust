@@ -1,30 +1,59 @@
-import requests
-from app.config import TEXT_MODEL_URL, HF_HEADERS
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+import torch.nn.functional as F
+
+# HuggingFace model path
+MODEL_PATH = "Sayantan090/fake-news-detector"
+
+# Load model once
+tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+
+model.eval()
 
 def detect_fake_text(text: str) -> dict:
-    """
-    Sends text to HuggingFace Inference API.
-    Returns: { label: "FAKE"/"REAL", confidence: 0.0–1.0, reason: str }
-    """
-    response = requests.post(
-        TEXT_MODEL_URL,
-        headers=HF_HEADERS,
-        json={"inputs": text},
-        timeout=30
-    )
-    response.raise_for_status()
-    results = response.json()
+    try:
+        inputs = tokenizer(
+            text,
+            return_tensors="pt",
+            truncation=True,
+            padding=True,
+            max_length=128
+        )
 
-    # HF returns list of [{"label": "FAKE", "score": 0.91}, {"label": "REAL", "score": 0.09}]
-    # Sort by score descending, pick top
-    if isinstance(results[0], list):
-        results = results[0]
+        with torch.no_grad():
+            outputs = model(**inputs)
 
-    top = max(results, key=lambda x: x["score"])
+        probs = F.softmax(outputs.logits, dim=-1)
 
-    return {
-        "label": top["label"].upper(),
-        "confidence": round(top["score"] * 100, 1),
-        "reason": f"Model confidence: {round(top['score']*100,1)}% that this is {top['label']}",
-        "all_scores": {r["label"]: round(r["score"]*100, 1) for r in results}
-    }
+        fake_prob = probs[0][0].item()
+        real_prob = probs[0][1].item()
+
+        pred = torch.argmax(probs).item()
+        confidence = probs[0][pred].item()
+
+        label = "FAKE" if pred == 0 else "REAL"
+
+        reason = (
+            "Detected patterns of misinformation or exaggeration."
+            if label == "FAKE"
+            else "Content appears factual and consistent."
+        )
+
+        return {
+            "label": label,
+            "confidence": round(confidence * 100, 1),
+            "reason": reason,
+            "all_scores": {
+                "FAKE": round(fake_prob * 100, 1),
+                "REAL": round(real_prob * 100, 1)
+            }
+        }
+
+    except Exception as e:
+        return {
+            "label": "ERROR",
+            "confidence": 0,
+            "reason": str(e),
+            "all_scores": {}
+        }
