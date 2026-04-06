@@ -6,8 +6,7 @@ interface AnalysisReasonProps {
 
 const AnalysisReason: React.FC<AnalysisReasonProps> = ({ reason }) => {
   return (
-    <p className="text-slate-300 leading-relaxed text-base italic border-l-2 border-indigo-500/50 pl-4 py-1 relative">
-      <span className="absolute -left-3 -top-2 text-4xl text-slate-700/50 font-serif leading-none">"</span>
+    <p className="text-[#0a0a0a] leading-relaxed text-base font-medium border-l-[4px] border-[#1D4ED8] pl-4 py-1">
       {reason}
     </p>
   );

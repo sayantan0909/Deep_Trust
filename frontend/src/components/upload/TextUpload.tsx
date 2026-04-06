@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Button from '../ui/Button';
-import Spinner from '../ui/Spinner';
 
 interface TextUploadProps {
   onAnalyze: (text: string) => void;
@@ -19,30 +17,37 @@ const TextUpload: React.FC<TextUploadProps> = ({ onAnalyze, loading }) => {
 
   return (
     <div className="w-full">
-      <form onSubmit={handleSubmit} className="relative group">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-        <div className="relative bg-slate-900 rounded-2xl p-2 h-full flex flex-col">
+      <form onSubmit={handleSubmit}>
+        <div className="bg-[#FFFDF7] border-[3px] border-[#0a0a0a] rounded-xl shadow-[6px_6px_0_#0a0a0a] p-2 hover:shadow-[8px_8px_0_#0a0a0a] hover:-translate-y-[2px] hover:-translate-x-[2px] transition-all">
           <textarea
-            className="w-full h-48 bg-slate-800/50 text-slate-100 placeholder-slate-500 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none transition-all"
+            className="w-full h-48 bg-[#F5F0E8] text-[#0a0a0a] placeholder-gray-400 rounded-lg p-4 border-[3px] border-[#0a0a0a] focus:outline-none focus:border-[#1D4ED8] focus:shadow-[inset_0_0_0_1px_#1D4ED8] resize-none transition-all font-medium"
             placeholder="Paste text here to detect AI generation (e.g. news articles, tweets, essays)..."
             value={text}
             onChange={(e) => setText(e.target.value)}
             disabled={loading}
           />
           <div className="flex justify-between items-center p-2 mt-2">
-            <span className="text-xs text-slate-500 font-medium tracking-wide ml-2">
+            <span className="text-xs text-gray-500 font-bold tracking-wide ml-2 uppercase">
               Supports up to 512 tokens
             </span>
-            <Button type="submit" disabled={!text.trim() || loading} variant="primary">
+            <button
+              type="submit"
+              disabled={!text.trim() || loading}
+              className={`px-8 py-3 font-black border-[3px] border-[#0a0a0a] rounded-lg shadow-[4px_4px_0_#0a0a0a] hover:-translate-y-[3px] hover:-translate-x-[3px] hover:shadow-[7px_7px_0_#0a0a0a] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:translate-x-0 disabled:hover:shadow-[4px_4px_0_#0a0a0a] ${
+                loading
+                  ? 'bg-[#0a0a0a] text-white'
+                  : 'bg-[#1D4ED8] text-white'
+              }`}
+            >
               {loading ? (
                 <>
-                  <Spinner size="sm" text="" />
+                  <div className="w-5 h-5 border-[3px] border-white/30 border-t-white rounded-full animate-spin"></div>
                   Scanning...
                 </>
               ) : (
                 'Analyze Text'
               )}
-            </Button>
+            </button>
           </div>
         </div>
       </form>

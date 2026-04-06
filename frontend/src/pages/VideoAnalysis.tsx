@@ -3,6 +3,7 @@ import VideoUpload from '../components/upload/VideoUpload';
 import ResultCard from '../components/results/ResultCard';
 import { useAnalyze } from '../hooks/useAnalyze';
 import { analyzeVideo } from '../utils/api';
+import GeometricBackground from '../components/ui/GeometricBackground';
 
 const VideoAnalysis: React.FC = () => {
   const { result, loading, error, analyze } = useAnalyze(analyzeVideo);
@@ -21,39 +22,56 @@ const VideoAnalysis: React.FC = () => {
   }, [loading]);
 
   return (
-    <div className="max-w-4xl mx-auto w-full fade-in">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-3">Video Frame Analysis</h1>
-        <p className="text-slate-400">
-          Upload a video file to run deepfake detection. The engine extracts frames securely and assesses each one, aggregating the confidence score.
-        </p>
-      </div>
+    <div className="relative w-full min-h-screen bg-[#F5F0E8] pt-8 pb-20">
+      <GeometricBackground variant="video" />
 
-      <VideoUpload onAnalyze={analyze} loading={loading} />
-      
-      {error && (
-        <div className="mt-6 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl">
-           <div className="flex items-center font-medium">
-             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-             {error}
+      <div className="relative z-10 max-w-4xl mx-auto px-4">
+        {/* Header */}
+        <div className="mb-10">
+          <span className="font-black text-[#0a0a0a] uppercase tracking-widest border-2 border-[#0a0a0a] bg-[#FAE8F0] px-3 py-1 rounded shadow-[2px_2px_0_#0a0a0a] text-xs inline-block mb-4">
+            Video Module
+          </span>
+          <h1 className="text-4xl md:text-5xl font-black text-[#0a0a0a] mb-4 leading-tight">
+            Video Frame Analysis
+          </h1>
+          <p className="text-lg font-medium text-gray-600 max-w-2xl">
+            Upload a video file to run deepfake detection. The engine extracts frames securely and assesses each one, aggregating the confidence score.
+          </p>
+        </div>
+
+        {/* Upload Area */}
+        <VideoUpload onAnalyze={analyze} loading={loading} />
+
+        {/* Error */}
+        {error && (
+          <div className="mt-6 p-4 bg-[#FFFDF7] border-[3px] border-[#e11d48] rounded-lg shadow-[4px_4px_0_#e11d48]" role="alert">
+            <div className="flex items-center font-black text-[#e11d48]">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+              {error}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {loading && showWakingMessage && (
-        <div className="mt-6 p-4 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-xl animate-fade-in text-center flex items-center justify-center gap-2">
-            <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-            <span>Analyzing frames... This can take up to 30 seconds for larger files...</span>
-        </div>
-      )}
+        {/* Processing Message */}
+        {loading && showWakingMessage && (
+          <div className="mt-6 p-4 bg-[#FFFDF7] border-[3px] border-[#eab308] rounded-lg shadow-[4px_4px_0_#eab308] text-center flex items-center justify-center gap-2">
+            <div className="w-5 h-5 border-[3px] border-[#eab308]/30 border-t-[#eab308] rounded-full animate-spin"></div>
+            <span className="font-bold text-[#0a0a0a]">Analyzing frames... This can take up to 30 seconds for larger files...</span>
+          </div>
+        )}
 
-      {loading && !result && (
-        <div className="mt-8 w-full h-64 bg-slate-800/20 border border-slate-700/50 rounded-2xl animate-pulse flex items-center justify-center">
-            <div className="w-12 h-12 rounded-full border-b-2 border-l-2 border-blue-500 animate-spin"></div>
-        </div>
-      )}
+        {/* Loading Skeleton */}
+        {loading && !result && (
+          <div className="mt-8">
+            <div className="w-full bg-[#FFFDF7] border-[3px] border-[#0a0a0a] rounded-xl shadow-[4px_4px_0_#0a0a0a] p-8 animate-pulse min-h-[200px] flex items-center justify-center">
+              <div className="w-10 h-10 border-[3px] border-[#0a0a0a]/20 border-t-[#0a0a0a] rounded-full animate-spin"></div>
+            </div>
+          </div>
+        )}
 
-      <ResultCard result={result} />
+        {/* Result */}
+        <ResultCard result={result} />
+      </div>
     </div>
   );
 };
