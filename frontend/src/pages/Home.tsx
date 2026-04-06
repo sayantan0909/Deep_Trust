@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import InteractiveGridBackground from '../components/InteractiveGridBackground';
 
 const RevealBox: React.FC<{ children: React.ReactNode; index?: number; className?: string }> = ({ children, index = 0, className = '' }) => {
   const { ref, visible } = useScrollReveal();
@@ -35,22 +36,82 @@ const NeuButton: React.FC<{ onClick?: () => void; children: React.ReactNode; pri
 const Home: React.FC = () => {
   const navigate = useNavigate();
 
+  const shape1Ref = useRef<HTMLDivElement>(null);
+  const shape2Ref = useRef<HTMLDivElement>(null);
+  const shape3Ref = useRef<HTMLDivElement>(null);
+  const shape4Ref = useRef<HTMLDivElement>(null);
+  const shape5Ref = useRef<HTMLDivElement>(null);
+  const shape6Ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+
+      if (shape1Ref.current) shape1Ref.current.style.transform = `rotate(${15 + scrollY * 0.08}deg) translateY(${scrollY * -0.25}px)`;
+      if (shape2Ref.current) shape2Ref.current.style.transform = `translateY(${scrollY * 0.18}px) translateX(${scrollY * 0.06}px)`;
+      if (shape3Ref.current) shape3Ref.current.style.transform = `translateY(${scrollY * -0.15}px) rotate(${scrollY * 0.05}deg)`;
+      if (shape4Ref.current) shape4Ref.current.style.transform = `translateY(${scrollY * 0.22}px) rotate(${scrollY * -0.07}deg)`;
+      if (shape5Ref.current) shape5Ref.current.style.transform = `translateX(${scrollY * -0.12}px) translateY(${scrollY * 0.1}px)`;
+      if (shape6Ref.current) shape6Ref.current.style.transform = `translateY(${scrollY * -0.20}px) scale(${1 + scrollY * 0.0003})`;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="w-full bg-[#F5F0E8] text-[#374151] overflow-x-hidden pt-8">
+      <style>{`
+        @keyframes floatA {
+          0%, 100% { margin-top: 0px; }
+          50% { margin-top: -12px; }
+        }
+        @keyframes floatB {
+          0%, 100% { margin-top: 0px; }
+          50% { margin-top: 10px; }
+        }
+        @keyframes floatC {
+          0%, 100% { margin-left: 0px; }
+          50% { margin-left: -8px; }
+        }
+        .float-a { animation: floatA 5s ease-in-out infinite; }
+        .float-b { animation: floatB 6s ease-in-out infinite 1s; }
+        .float-c { animation: floatC 7s ease-in-out infinite 2s; }
+      `}</style>
 
       {/* 1. HERO SECTION */}
-      <section className="relative w-full min-h-[95vh] flex flex-col items-center justify-center py-20 px-4">
+      <section className="relative w-full min-h-[95vh] overflow-hidden flex flex-col items-center justify-center py-20 px-4">
+        <InteractiveGridBackground />
         {/* Geometric Background Shapes (Neubrutalism) */}
         <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
-          <div className="absolute top-[10%] left-[5%] w-64 h-64 bg-[#FBBF24] border-[2px] border-[#0a0a0a] rounded-lg rotate-15 opacity-30"></div>
-          <div className="absolute bottom-[20%] right-[10%] w-48 h-48 bg-[#60A5FA] border-[2px] border-[#0a0a0a] rounded-full -rotate-6 opacity-40"></div>
-          <div className="absolute top-[35%] right-[15%] w-24 h-24 bg-[#A78BFA] border-[2px] border-[#0a0a0a] rotate-45 opacity-40"></div>
+          <div ref={shape1Ref} className="float-a" style={{
+            position: "absolute", top: "8%", left: "4%", width: 90, height: 90, background: "#FBBF24", clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)", opacity: 0.75, transform: "rotate(15deg)", zIndex: 1
+          }} />
+          <div ref={shape2Ref} className="float-b" style={{
+            position: "absolute", top: "12%", right: "6%", width: 80, height: 80, background: "#60A5FA", clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)", opacity: 0.70, zIndex: 1
+          }} />
+          <div ref={shape3Ref} className="float-c" style={{
+            position: "absolute", top: "45%", left: "2%", width: 70, height: 70, background: "#A78BFA", clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)", opacity: 0.65, zIndex: 1
+          }} />
+          <div ref={shape4Ref} className="float-a" style={{
+            position: "absolute", bottom: "15%", right: "5%", width: 60, height: 60, background: "#34D399", clipPath: "polygon(33% 0%,66% 0%,66% 33%,100% 33%,100% 66%,66% 66%,66% 100%,33% 100%,33% 66%,0% 66%,0% 33%,33% 33%)", opacity: 0.70, zIndex: 1
+          }} />
+          <div ref={shape5Ref} className="float-b" style={{
+            position: "absolute", bottom: "10%", left: "8%", width: 100, height: 45, background: "#F472B6", clipPath: "polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)", opacity: 0.65, zIndex: 1
+          }} />
+          <div ref={shape6Ref} className="float-c" style={{
+            position: "absolute", top: "60%", right: "12%", width: 65, height: 65, background: "#FCD34D", clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)", opacity: 0.72, zIndex: 1
+          }} />
         </div>
 
         <div className="relative z-10 max-w-4xl text-center flex flex-col items-center">
           <RevealBox index={0}>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-[#0a0a0a] tracking-tight mb-7 leading-tight">
-              Detect Fake Content in Seconds!
+            <h1 className="text-7xl md:text-7xl lg:text-8xl font-semibold leading-tight tracking-40 mb-7">
+              <span style={{ color: "#1D4ED8" }}>Detect</span>{" "}
+              <span style={{ color: "#0891B2" }}>Fake</span>{" "}
+              <span style={{ color: "#7C3AED" }}>Content</span>{" "}
+              <span style={{ color: "#DC2626" }}>in</span>{" "}
+              <span style={{ color: "#059669" }}>Seconds!</span>
             </h1>
           </RevealBox>
           <RevealBox index={1.5}>
@@ -62,7 +123,7 @@ const Home: React.FC = () => {
             <NeuButton onClick={() => navigate('/image')} primary={true}>
               Start Analyzing
             </NeuButton>
-            <NeuButton primary={false}>
+            <NeuButton onClick={() => navigate('/about')} primary={false}>
               Learn More
             </NeuButton>
           </RevealBox>

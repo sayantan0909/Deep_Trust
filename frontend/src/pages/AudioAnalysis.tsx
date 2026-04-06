@@ -28,9 +28,7 @@ const AudioAnalysis: React.FC = () => {
       <div className="relative z-10 max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="mb-10">
-          <span className="font-black text-[#0a0a0a] uppercase tracking-widest border-2 border-[#0a0a0a] bg-[#D4F3F7] px-3 py-1 rounded shadow-[2px_2px_0_#0a0a0a] text-xs inline-block mb-4">
-            Audio Module
-          </span>
+
           <h1 className="text-4xl md:text-5xl font-black text-[#0a0a0a] mb-4 leading-tight">
             Audio & Voice Cloning Scan
           </h1>
