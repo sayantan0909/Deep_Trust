@@ -4,12 +4,10 @@ interface SplashScreenProps {
   onComplete: () => void;
 }
 
-// === STAGE 1 COMPONENTS ===
-
 const RingExpand = ({ delay }: { delay: number }) => (
   <div style={{
     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-    border: '2px solid #2563eb', borderRadius: '50%',
+    border: '2px solid #60A5FA', borderRadius: '50%',
     animation: `ringExpand 2s ease-out infinite ${delay}s`, pointerEvents: 'none'
   }} />
 );
@@ -50,107 +48,72 @@ const DriftIcon = ({ children, top, left, right, bottom, delay, duration }: any)
   </div>
 );
 
+// --- Vibrant Background Decorations --- //
+const SplashCloud = ({ top, left, right, bottom, speed, reverse }: any) => (
+  <svg style={{ position: 'absolute', top, left, right, bottom, animation: `${reverse ? 'bgCloudRev' : 'bgCloud'} ${speed}s linear infinite`, opacity: 0.9, pointerEvents: 'none', zIndex: -1 }} width="100" height="60" viewBox="0 0 100 60">
+    <ellipse cx="30" cy="35" rx="20" ry="20" fill="#FFFFFF" opacity="0.9" />
+    <ellipse cx="60" cy="28" rx="25" ry="25" fill="#FFFFFF" opacity="0.9" />
+    <ellipse cx="80" cy="40" rx="15" ry="15" fill="#FFFFFF" opacity="0.8" />
+    <rect x="25" cy="30" width="60" height="15" rx="5" fill="#FFFFFF" y="32" opacity="0.9" />
+    <ellipse cx="60" cy="30" rx="20" ry="20" fill="#EAF4FB" opacity="0.6" />
+    <ellipse cx="30" cy="35" rx="10" ry="10" fill="#FAE8F0" opacity="0.5" />
+  </svg>
+);
 
-// === STAGE 2 COMPONENTS ===
-
-const Rocket = () => (
-  <svg style={{ position: 'absolute', top: '15%', right: '10%', animation: 'rocketPath 4s ease-in-out infinite', pointerEvents: 'none' }} width="32" height="48" viewBox="0 0 32 48">
-    <rect x="10" y="14" width="12" height="22" rx="4" fill="#1D4ED8"/>
-    <polygon points="16,2 10,14 22,14" fill="#2563EB"/>
-    <polygon points="10,28 4,38 10,36" fill="#1E40AF"/>
-    <polygon points="22,28 28,38 22,36" fill="#1E40AF"/>
-    <ellipse cx="16" cy="38" rx="5" ry="8" fill="#FCD34D" style={{animation:"flameFicker 0.3s infinite"}}/>
+const SplashRocket = () => (
+  <svg style={{ position: 'absolute', top: '15%', right: '15%', animation: 'bgRocket 12s ease-in-out infinite', opacity: 0.95, pointerEvents: 'none', zIndex: -1 }} width="48" height="72" viewBox="0 0 32 48">
+    {/* Body */}
+    <rect x="10" y="14" width="12" height="22" rx="4" fill="#60A5FA"/>
+    {/* Nose */}
+    <polygon points="16,2 10,14 22,14" fill="#1D4ED8"/>
+    {/* Fins */}
+    <polygon points="10,28 4,38 10,36" fill="#EF4444"/>
+    <polygon points="22,28 28,38 22,36" fill="#EF4444"/>
+    {/* Flame */}
+    <ellipse cx="16" cy="38" rx="5" ry="8" fill="#FBBF24" style={{animation:"flameFicker 0.3s infinite"}}/>
     <ellipse cx="16" cy="40" rx="3" ry="5" fill="#EF4444" style={{animation:"flameFicker 0.3s 0.1s infinite"}}/>
   </svg>
 );
 
-const Cloud = ({ size, direction, top, delay, dur }: any) => {
-  const scale = size === 'lg' ? 1.2 : size === 'md' ? 0.9 : 0.6;
-  const animName = direction === 'right' ? 'cloudDriftRight' : 'cloudDriftLeft';
-  return (
-    <svg style={{ position: 'absolute', top, left: direction === 'right' ? '-100px' : 'auto', right: direction === 'left' ? '-100px' : 'auto', transform: `scale(${scale})`, animation: `${animName} ${dur}s linear infinite ${delay}s`, zIndex: 1, pointerEvents: 'none' }} width="70" height="36" viewBox="0 0 70 36">
-      <circle cx="20" cy="26" r="14" fill="rgba(219,234,254,0.9)" />
-      <circle cx="35" cy="20" r="18" fill="rgba(219,234,254,0.9)" />
-      <circle cx="52" cy="26" r="13" fill="rgba(219,234,254,0.9)" />
-      <rect x="6" y="26" width="58" height="10" fill="rgba(219,234,254,0.9)" rx="2"/>
-    </svg>
-  );
-};
-
-const MagnifyingGlass = () => (
-  <svg style={{ position: 'absolute', bottom: '20%', left: '8%', animation: 'floatOval 6s ease-in-out infinite', pointerEvents: 'none' }} width="28" height="28" viewBox="0 0 28 28" fill="none">
-    <circle cx="12" cy="12" r="8" stroke="#2563eb" strokeWidth="3"/>
-    <line x1="17" y1="17" x2="24" y2="24" stroke="#1E40AF" strokeWidth="4" strokeLinecap="round"/>
+const SplashGlobe = () => (
+  <svg style={{ position: 'absolute', bottom: '15%', left: '10%', animation: 'bgGlobe 15s ease-in-out infinite', opacity: 0.85, pointerEvents: 'none', zIndex: -1 }} width="60" height="60" viewBox="0 0 30 30" fill="none" stroke="#22D3EE" strokeWidth="1.5">
+    <circle cx="15" cy="15" r="14" fill="#D4F3F7" stroke="#34D399" />
+    <ellipse cx="15" cy="15" rx="6" ry="14" stroke="#60A5FA" />
+    <ellipse cx="15" cy="15" rx="14" ry="4" stroke="#A78BFA" />
   </svg>
 );
 
-const ShieldIcon = ({ pos, delay }: any) => (
-  <svg style={{ position: 'absolute', ...(pos === 'topLeft' ? {top: '15%', left: '15%'} : {bottom: '25%', right: '12%'}), animation: `gentleBob 3.5s ease-in-out infinite ${delay}s`, pointerEvents: 'none' }} width="20" height="20" viewBox="0 0 24 24" fill="rgba(37,99,235,0.4)">
-    <path d="M12 2L3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-9-4z"/>
+const SplashBgStar = ({ top, left, right, bottom, speed, size = 16, delay, color = '#FBBF24' }: any) => (
+  <svg width={size} height={size} viewBox="0 0 12 12" style={{ position: 'absolute', top, left, right, bottom, opacity: 0.9, color: color, animation: `bgStar ${speed}s ease-in-out infinite ${delay}s`, filter: `drop-shadow(0 0 4px ${color})`, pointerEvents: 'none', zIndex: -1 }}>
+    <path d="M6 0 L7 5 L12 6 L7 7 L6 12 L5 7 L0 6 L5 5 Z" fill="currentColor" />
   </svg>
 );
 
-const SignalWaves = () => (
-  <svg style={{ position: 'absolute', top: '50%', left: '5%', pointerEvents: 'none' }} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" strokeWidth="2" strokeLinecap="round">
-    <path d="M12 20h.01" strokeWidth="4" />
-    <path d="M8.5 16.5a5 5 0 0 1 7 0" style={{animation: "signalPulse 2s infinite 0.6s"}} />
-    <path d="M5 13a10 10 0 0 1 14 0" style={{animation: "signalPulse 2s infinite 0.3s"}} />
-    <path d="M2 9.5a15 15 0 0 1 20 0" style={{animation: "signalPulse 2s infinite 0s"}} />
+const SplashDiamond = ({ top, left, right, bottom, speed, color = '#A78BFA' }: any) => (
+  <svg style={{ position: 'absolute', top, left, right, bottom, opacity: 0.85, animation: `bgDiamond ${speed}s linear infinite`, pointerEvents: 'none', zIndex: -1 }} width="30" height="30" viewBox="0 0 40 40">
+    <polygon points="20,0 40,20 20,40 0,20" fill={color} />
   </svg>
 );
 
-const Globe = () => (
-  <svg style={{ position: 'absolute', top: '12%', left: '6%', animation: 'globeSpin 8s linear infinite', pointerEvents: 'none' }} width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="#7C3AED" strokeWidth="1.5">
-    <circle cx="15" cy="15" r="14" />
-    <ellipse cx="15" cy="15" rx="6" ry="14" />
-    <ellipse cx="15" cy="15" rx="14" ry="4" />
+const SplashBlob = ({ top, left, right, bottom, speed, color }: any) => (
+  <svg style={{ position: 'absolute', top, left, right, bottom, opacity: 0.65, animation: `bgDiamond ${speed}s ease-in-out infinite`, pointerEvents: 'none', zIndex: -1 }} width="60" height="60" viewBox="0 0 60 60">
+    <circle cx="30" cy="30" r="25" fill={color} filter="blur(2px)"/>
   </svg>
 );
-
-const BinaryDrop = ({ left, delay, dur, text }: any) => (
-  <div style={{ position: 'absolute', bottom: '10%', left, fontFamily: 'monospace', fontSize: '11px', color: 'rgba(37,99,235,0.5)', animation: `binaryRise ${dur}s ease-in infinite ${delay}s`, pointerEvents: 'none' }}>
-    {text}
-  </div>
-);
-
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
-  const [stage, setStage] = useState(1);
-  const [opacity, setOpacity] = useState(1);
-  const [scale, setScale] = useState(0.8);
-  const [logoOpacity, setLogoOpacity] = useState(0);
+  const [logoVisible,    setLogoVisible]    = useState(false);
+  const [textVisible,    setTextVisible]    = useState(false);
+  const [screenOpacity,  setScreenOpacity]  = useState(1);
 
   useEffect(() => {
-    // Initial mount - trigger stage 1 animations
-    const t0 = setTimeout(() => {
-      setScale(1);
-      setLogoOpacity(1);
-    }, 50);
-
-    // Stage 2 starts at 1.2s -> hide logo, show text
-    const t1 = setTimeout(() => {
-      setStage(2);
-    }, 1200);
-
-    // Stage 3 fade out starts at 2.4s -> fade whole screen
-    const t2 = setTimeout(() => {
-      setOpacity(0);
-    }, 2400);
-
-    // Unmount at 2.8s
-    const t3 = setTimeout(() => {
-      onComplete();
-    }, 2800);
-
-    return () => {
-      clearTimeout(t0);
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
+    const t0 = setTimeout(() => setLogoVisible(true),   50);
+    const t1 = setTimeout(() => setTextVisible(true),   900);
+    const t2 = setTimeout(() => setScreenOpacity(0),    3400); // 3.4 seconds fade trigger
+    const t3 = setTimeout(() => onComplete(),           4000); // 4.0 seconds unmount
+    return () => { clearTimeout(t0); clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [onComplete]);
 
-  // Stage 1 configuration lists
   const orbitDots = [
     { startAngle: 0, color: '#2563eb', delay: 0 },
     { startAngle: 60, color: '#FBBF24', delay: 0.5 },
@@ -169,10 +132,10 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
     { top: -20, left: 10, color: '#FBBF24', duration: 1.2, delay: 0.2 },
     { top: 10, right: -10, color: '#60A5FA', duration: 0.9, delay: 0.5 },
     { bottom: -10, left: 20, color: '#F472B6', duration: 1.4, delay: 0.1 },
-    { bottom: 30, right: -25, color: 'white', duration: 1.1, delay: 0.8 },
+    { bottom: 30, right: -25, color: '#22D3EE', duration: 1.1, delay: 0.8 },
     { top: -15, right: 20, color: '#34D399', duration: 1.3, delay: 1.2 },
     { bottom: -20, right: 10, color: '#FBBF24', duration: 0.8, delay: 1.5 },
-    { top: 40, left: -25, color: 'white', duration: 1.0, delay: 0.4 },
+    { top: 40, left: -25, color: '#A78BFA', duration: 1.0, delay: 0.4 },
     { top: 80, right: -30, color: '#60A5FA', duration: 1.2, delay: 1.7 }
   ];
   const driftIcons = [
@@ -182,28 +145,19 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
     { bottom: 5, left: -25, delay: 0, duration: 3.0, children: <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#A78BFA' }}>01</span> }
   ];
 
-  // Stage 2 configuration lists
-  const stage2Sparkles = [
-    { top: '10%', left: '20%', size: 16, color: '#FBBF24', duration: 2.0, delay: 0.5 },
-    { top: '25%', right: '15%', size: 12, color: '#60A5FA', duration: 1.8, delay: 1.2 },
-    { bottom: '15%', left: '30%', size: 20, color: '#F472B6', duration: 2.5, delay: 0.1 },
-    { top: '40%', left: '5%', size: 8, color: 'white', duration: 1.5, delay: 2.0 },
-    { bottom: '35%', right: '25%', size: 14, color: '#34D399', duration: 2.2, delay: 0.8 },
-    { top: '15%', left: '60%', size: 10, color: 'white', duration: 1.6, delay: 3.0 },
-    { top: '60%', right: '8%', size: 18, color: '#FBBF24', duration: 2.8, delay: 1.5 },
-    { bottom: '45%', left: '15%', size: 12, color: '#60A5FA', duration: 1.9, delay: 0.4 },
-    { bottom: '10%', right: '40%', size: 15, color: '#A78BFA', duration: 2.4, delay: 2.5 },
-    { top: '50%', left: '45%', size: 9, color: 'white', duration: 1.7, delay: 1.0 },
-  ];
-  const binaryNodes = [
-    { left: '15%', dur: 4.5, delay: 0.2, text: "01" },
-    { left: '50%', dur: 3.8, delay: 1.5, text: "10" },
-    { left: '82%', dur: 5.0, delay: 0.8, text: "11" }
-  ];
-
   return (
-    <>
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      background: 'linear-gradient(135deg, #FDF7E4 0%, #EAF4FB 50%, #F5F0F8 100%)',
+      zIndex: 9999,
+      opacity: screenOpacity,
+      transition: 'opacity 0.6s ease-out',
+      overflow: 'hidden'
+    }}>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+        
         @keyframes scanPulse {
           0%   { transform: scale(0) translateX(0); opacity: 1; }
           60%  { opacity: 0.8; }
@@ -226,141 +180,112 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           0%   { transform: translateY(0px);  opacity: 1; }
           100% { transform: translateY(-35px); opacity: 0; }
         }
-        @keyframes rocketPath {
-          0%, 100% { transform: translateX(0px) translateY(0px); }
-          50%      { transform: translateX(-20px) translateY(-30px); }
-        }
+        
+        /* Vibrant Floating Background Animations */
         @keyframes flameFicker {
           0%,100% { transform: scaleY(1);   opacity: 1;   }
           50%     { transform: scaleY(0.7); opacity: 0.7; }
         }
-        @keyframes cloudDriftRight {
-          0%   { transform: translateX(-100px); opacity: 0;   }
-          10%  { opacity: 0.9; }
-          90%  { opacity: 0.9; }
-          100% { transform: translateX(calc(100vw + 100px)); opacity: 0; }
+        @keyframes bgCloud {
+          0%   { transform: translateX(0px) translateY(0px); }
+          50%  { transform: translateX(80px) translateY(-10px); }
+          100% { transform: translateX(0px) translateY(0px); }
         }
-        @keyframes cloudDriftLeft {
-          0%   { transform: translateX(100px);  opacity: 0;   }
-          10%  { opacity: 0.8; }
-          90%  { opacity: 0.8; }
-          100% { transform: translateX(calc(-100vw - 100px)); opacity: 0; }
+        @keyframes bgCloudRev {
+          0%   { transform: translateX(0px) translateY(0px); }
+          50%  { transform: translateX(-60px) translateY(15px); }
+          100% { transform: translateX(0px) translateY(0px); }
         }
-        @keyframes floatOval {
-          0%   { transform: translate(0px, 0px)    rotate(-10deg); }
-          25%  { transform: translate(15px, -20px) rotate(0deg);   }
-          50%  { transform: translate(0px, -35px)  rotate(10deg);  }
-          75%  { transform: translate(-15px,-20px) rotate(0deg);   }
-          100% { transform: translate(0px, 0px)    rotate(-10deg); }
+        @keyframes bgGlobe {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50%      { transform: translateY(-30px) rotate(15deg); }
         }
-        @keyframes gentleBob {
-          0%,100% { transform: translateY(0px)  rotate(-5deg); }
-          50%     { transform: translateY(-16px) rotate(5deg);  }
+        @keyframes bgRocket {
+          0%, 100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+          50%      { transform: translateX(-40px) translateY(-60px) rotate(8deg); }
         }
-        @keyframes signalPulse {
-          0%,100% { opacity: 0.2; }
-          33%     { opacity: 1.0; }
-          66%     { opacity: 0.6; }
+        @keyframes bgStar {
+          0%, 100% { transform: scale(0.6) rotate(0deg); opacity: 0.4; }
+          50%      { transform: scale(1.3) rotate(45deg); opacity: 1; }
         }
-        @keyframes globeSpin {
-          from { transform: rotateY(0deg);   }
-          to   { transform: rotateY(360deg); }
-        }
-        @keyframes binaryRise {
-          0%   { transform: translateY(40px);  opacity: 0;   }
-          20%  { opacity: 0.7; }
-          80%  { opacity: 0.5; }
-          100% { transform: translateY(-40px); opacity: 0;   }
+        @keyframes bgDiamond {
+          0% { transform: rotate(0deg) translateY(0px); }
+          50% { transform: rotate(180deg) translateY(20px); }
+          100% { transform: rotate(360deg) translateY(0px); }
         }
       `}</style>
+      
+      {/* Absolute Vibrant Background Floating Graphics layer */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+        <SplashCloud top="15%" left="8%" speed={22} reverse={false} />
+        <SplashCloud bottom="25%" right="12%" speed={28} reverse={true} />
+        
+        <SplashRocket />
+        <SplashGlobe />
+        
+        {/* Vibrant scattered stars / geometric abstract loops */}
+        <SplashBgStar top="15%" left="40%" speed={9} size={18} delay={0} color="#F472B6" />
+        <SplashBgStar top="60%" right="20%" speed={12} size={20} delay={2} color="#22D3EE" />
+        <SplashBgStar bottom="15%" left="25%" speed={14} size={24} delay={1.5} color="#FBBF24" />
+        <SplashBgStar top="30%" right="28%" speed={18} size={16} delay={0.8} color="#A78BFA" />
 
-      <div
-        style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: '#F5F0E8',
-          zIndex: 9999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          opacity: opacity,
-          transition: 'opacity 0.4s ease-out',
-        }}
-      >
-        {/* Stage 1: Logo SVG + Decorative Elements */}
-        {stage === 1 && (
-          <div 
-            style={{
-              position: 'relative',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: logoOpacity,
-              transform: `scale(${scale})`,
-              transition: 'transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-out'
-            }}
-          >
-            {/* Stage 1 Elements */}
-            <RingExpand delay={0} />
-            <RingExpand delay={0.7} />
-            {orbitDots.map((dot, i) => <OrbitDot key={`dot-${i}`} {...dot} />)}
-            {scanLines.map((line, i) => <ScanPulse key={`scan-${i}`} {...line} />)}
-            {stage1Sparkles.map((s, i) => <Sparkle key={`s1-${i}`} {...s} />)}
-            {driftIcons.map((icon, i) => <DriftIcon key={`dir-${i}`} {...icon} />)}
+        <SplashDiamond top="25%" right="35%" speed={15} color="#A78BFA" />
+        <SplashDiamond bottom="30%" left="18%" speed={20} color="#22D3EE" />
 
-            <svg style={{ position: 'relative', zIndex: 10 }} width="120" height="120" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M50 5L15 20V45C15 65.5 30 83 50 95C70 83 85 65.5 85 45V20L50 5Z" fill="#2563eb" stroke="#0a0a0a" strokeWidth="6" strokeLinejoin="round"/>
-              <path d="M50 15L25 26V45C25 61 35 74 50 82C65 74 75 61 75 45V26L50 15Z" fill="#FFFDF7" stroke="#0a0a0a" strokeWidth="4" strokeLinejoin="round"/>
-              <circle cx="45" cy="45" r="14" fill="transparent" stroke="#0a0a0a" strokeWidth="5"/>
-              <line x1="55" y1="55" x2="70" y2="70" stroke="#0a0a0a" strokeWidth="6" strokeLinecap="round"/>
-              <line x1="42" y1="38" x2="48" y2="44" stroke="#2563eb" strokeWidth="3" strokeLinecap="round"/>
-            </svg>
-          </div>
-        )}
+        <SplashBlob top="40%" left="5%" speed={18} color="#F472B6" />
+        <SplashBlob top="8%" right="40%" speed={23} color="#FBBF24" />
+      </div>
 
-        {/* Stage 2: Welcome Text + Floating Illustrations */}
-        <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
-          {stage === 2 && (
-            <>
-              {/* Floating Background Illustrations */}
-              <Rocket />
-              <Cloud size="lg" direction="right" top="18%" delay={0} dur={8} />
-              <Cloud size="md" direction="left" top="58%" delay={2} dur={10} />
-              <Cloud size="sm" direction="right" top="38%" delay={5} dur={12} />
-              <MagnifyingGlass />
-              <Globe />
-              <SignalWaves />
-              <ShieldIcon pos="topLeft" delay={0} />
-              <ShieldIcon pos="bottomRight" delay={1.8} />
-              {stage2Sparkles.map((s, i) => <Sparkle key={`s2-${i}`} {...s} />)}
-              {binaryNodes.map((node, i) => <BinaryDrop key={`bin-${i}`} {...node} />)}
-            </>
-          )}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        position: 'relative',
+        zIndex: 10
+      }}>
+        {/* Logo and Decorations */}
+        <div style={{
+          position: 'relative',
+          opacity: logoVisible ? 1 : 0,
+          transform: logoVisible ? `scale(1) translateY(${textVisible ? '-28px' : '0px'})` : 'scale(0.88) translateY(0px)',
+          transition: 'transform 700ms cubic-bezier(0.34,1.56,0.64,1), opacity 700ms ease-out',
+        }}>
+          <RingExpand delay={0} />
+          <RingExpand delay={0.7} />
+          {orbitDots.map((dot, i) => <OrbitDot key={`dot-${i}`} {...dot} />)}
+          {scanLines.map((line, i) => <ScanPulse key={`scan-${i}`} {...line} />)}
+          {stage1Sparkles.map((s, i) => <Sparkle key={`s1-${i}`} {...s} />)}
+          {driftIcons.map((icon, i) => <DriftIcon key={`dir-${i}`} {...icon} />)}
 
-          {/* Central Welcome Text */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 10,
-              opacity: stage === 2 ? 1 : 0,
-              transform: stage === 2 ? 'translateY(0)' : 'translateY(16px)',
-              transition: 'all 0.6s ease-out',
-              textAlign: 'center'
-            }}
-          >
-            <h1 className="font-black text-4xl sm:text-5xl text-[#0a0a0a] tracking-tight">
-              Welcome to DeepTrust!!
-            </h1>
-          </div>
+          {/* DeepTrust Logo Solid Colors unaffected */}
+          <svg width="120" height="120" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ zIndex: 10, position: 'relative' }}>
+            <path d="M50 5L15 20V45C15 65.5 30 83 50 95C70 83 85 65.5 85 45V20L50 5Z" fill="#2563eb" stroke="#0a0a0a" strokeWidth="6" strokeLinejoin="round"/>
+            <path d="M50 15L25 26V45C25 61 35 74 50 82C65 74 75 61 75 45V26L50 15Z" fill="#FFFDF7" stroke="#0a0a0a" strokeWidth="4" strokeLinejoin="round"/>
+            <circle cx="45" cy="45" r="14" fill="transparent" stroke="#0a0a0a" strokeWidth="5"/>
+            <line x1="55" y1="55" x2="70" y2="70" stroke="#0a0a0a" strokeWidth="6" strokeLinecap="round"/>
+            <line x1="42" y1="38" x2="48" y2="44" stroke="#2563eb" strokeWidth="3" strokeLinecap="round"/>
+          </svg>
+        </div>
+
+        {/* Welcome Text */}
+        <div style={{
+          opacity: textVisible ? 1 : 0,
+          transform: textVisible ? "translateY(0px)" : "translateY(14px)",
+          transition: "opacity 600ms ease-out, transform 600ms ease-out",
+          marginTop: 24,
+          position: 'relative',
+          zIndex: 10
+        }}>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0a0a0a] tracking-tight"
+style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            Welcome to DeepTrust!
+          </h1>
         </div>
 
       </div>
-    </>
+    </div>
   );
 };
 

@@ -75,6 +75,10 @@ const Home: React.FC = () => {
           0%, 100% { margin-left: 0px; }
           50% { margin-left: -8px; }
         }
+        @keyframes gradientFlow {
+          0% { background-position: 0% center; }
+          100% { background-position: -200% center; }
+        }
         .float-a { animation: floatA 5s ease-in-out infinite; }
         .float-b { animation: floatB 6s ease-in-out infinite 1s; }
         .float-c { animation: floatC 7s ease-in-out infinite 2s; }
@@ -98,21 +102,21 @@ const Home: React.FC = () => {
             position: "absolute", bottom: "15%", right: "5%", width: 60, height: 60, background: "#34D399", clipPath: "polygon(33% 0%,66% 0%,66% 33%,100% 33%,100% 66%,66% 66%,66% 100%,33% 100%,33% 66%,0% 66%,0% 33%,33% 33%)", opacity: 0.70, zIndex: 1
           }} />
           <div ref={shape5Ref} className="float-b" style={{
-            position: "absolute", bottom: "10%", left: "8%", width: 100, height: 45, background: "#F472B6", clipPath: "polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)", opacity: 0.65, zIndex: 1
+            position: "absolute", bottom: "10%", left: "8%", width: 100, height: 80, background: "#F472B6", clipPath: "polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)", opacity: 0.65, zIndex: 1
           }} />
           <div ref={shape6Ref} className="float-c" style={{
-            position: "absolute", top: "60%", right: "12%", width: 65, height: 65, background: "#FCD34D", clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)", opacity: 0.72, zIndex: 1
+            position: "absolute", top: "60%", right: "12%", width: 70, height: 70, background: "#FCD34D", clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)", opacity: 0.72, zIndex: 1
           }} />
         </div>
 
         <div className="relative z-10 max-w-4xl text-center flex flex-col items-center">
           <RevealBox index={0}>
-            <h1 className="text-7xl md:text-7xl lg:text-8xl font-semibold leading-tight tracking-40 mb-7">
-              <span style={{ color: "#1D4ED8" }}>Detect</span>{" "}
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 text-[#0a0a0a]" style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.02em" }}>
+              <span style={{ color: "#1D4ED8" }}>Detect</span>{" "} 
               <span style={{ color: "#0891B2" }}>Fake</span>{" "}
               <span style={{ color: "#7C3AED" }}>Content</span>{" "}
               <span style={{ color: "#DC2626" }}>in</span>{" "}
-              <span style={{ color: "#059669" }}>Seconds!</span>
+              <span style={{ color: "#bd4dbbff" }}>Seconds!</span>{" "}
             </h1>
           </RevealBox>
           <RevealBox index={1.5}>
