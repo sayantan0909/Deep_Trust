@@ -3,14 +3,66 @@
 @theme {
   --color-primary-500: #3b82f6;
   --color-primary-600: #2563eb;
-  --color-dark-surface: #1e293b;
-  --color-dark-bg: #0f172a;
 }
 
 body {
-  @apply bg-dark-bg text-slate-100 antialiased min-h-screen flex flex-col;
+  @apply text-slate-900 antialiased min-h-screen flex flex-col;
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 40%, #faf5ff 100%);
+  background-attachment: fixed;
 }
 
 #root {
   @apply flex flex-col flex-1;
+}
+
+.glass-card {
+  @apply bg-white/70 backdrop-blur-xl border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl transition-all duration-300;
+}
+
+.glass-navbar {
+  @apply bg-white/60 backdrop-blur-md border-b border-slate-200/50 shadow-sm transition-all duration-300;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.9s ease-out;
 }
