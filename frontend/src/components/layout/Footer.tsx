@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="flex flex-col space-y-2">
+          <div className="flex flex-col space-y-2 md:justify-self-end">
             <h3 className="font-black text-[#0a0a0a] text-lg mb-2">Quick Links</h3>
             <Link to="/" className="font-bold text-[#374151] hover:text-[#2563eb] hover:translate-x-1 transition-transform w-max">Home</Link>
             <Link to="/about" className="font-bold text-[#374151] hover:text-[#2563eb] hover:translate-x-1 transition-transform w-max">About Us</Link>

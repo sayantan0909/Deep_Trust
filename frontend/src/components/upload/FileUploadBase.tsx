@@ -110,7 +110,10 @@ const FileUploadBase: React.FC<FileUploadBaseProps> = ({
                   disabled={loading}
                 />
               </label>
-              <p className="mt-4 text-xs text-gray-400 font-bold uppercase tracking-wider">Max size: {maxSizeMB}MB · Drag and drop supported</p>
+              <div className="mt-4 text-center">
+                <p className="text-sm font-bold text-gray-600 mb-1 uppercase tracking-wider">Drag and drop</p>
+                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Max size: {maxSizeMB}MB</p>
+              </div>
 
               {/* Dashed drop zone indicator */}
               {dragActive && (

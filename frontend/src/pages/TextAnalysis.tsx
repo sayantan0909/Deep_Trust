@@ -20,7 +20,7 @@ const TextAnalysis: React.FC = () => {
             Text Authenticity Check
           </h1>
           <p className="text-lg font-medium text-gray-600 max-w-2xl">
-            Paste content below to scan for AI generation. Our RoBERTa-based model detects synthetic patterns characteristic of Large Language Models.
+            Paste content below to scan for AI generation.
           </p>
         </div>
 

@@ -68,6 +68,23 @@ const About: React.FC = () => {
 
             </div>
           </RevealBox>
+
+          <RevealBox index={2}>
+            <div className="bg-white/60 backdrop-blur-sm border-[3px] border-[#0a0a0a] rounded-xl py-8 px-8 md:p-12 shadow-[4px_4px_0_#0a0a0a] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0_#0a0a0a] transition-all text-lg md:text-xl leading-relaxed text-gray-700">
+              <h2 className="text-3xl font-black text-[#0a0a0a] mb-6">Our Technology & Vision</h2>
+              <div className="space-y-5">
+                <p>
+                  We recognize that while generative AI holds immense potential for creativity and innovation, it also presents unprecedented challenges to digital trust and security.
+                </p>
+                <p>
+                  By integrating cutting-edge models like <span className="text-[#1D4ED8] font-bold">RoBERTa</span> for text analysis, <span className="text-[#1D4ED8] font-bold">Vision Transformers</span> for image and video forensics, and <span className="text-[#1D4ED8] font-bold">Wav2Vec2</span> for speech synthesis detection, our system delivers a robust, multi-modal defense mechanism.
+                </p>
+                <p>
+                  Whether you're a journalist verifying a source, a business protecting its brand, or an individual navigating the web, you deserve the tools to critically evaluate what you see and hear. We envision a future where technology empowers truth rather than obscures it.
+                </p>
+              </div>
+            </div>
+          </RevealBox>
         </div>
       </section>
 

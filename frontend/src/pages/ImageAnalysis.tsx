@@ -20,7 +20,7 @@ const ImageAnalysis: React.FC = () => {
             Image Deepfake Detection
           </h1>
           <p className="text-lg font-medium text-gray-600 max-w-2xl">
-            Upload an image to scan for synthetic generation or deepfake manipulation using our Vision Transformer architecture.
+            Upload an image to scan for synthetic generation or deepfake manipulation.
           </p>
         </div>
 
