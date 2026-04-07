@@ -16,7 +16,7 @@ ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 
 # YOUR HuggingFace models (Note: Inference API must be enabled on HF for these)
 TEXT_MODEL_URL  = "https://api-inference.huggingface.co/models/Sayantan090/fake-news-detector"
-AUDIO_MODEL_URL = "https://sayantan090-audio-deepfake-detector.hf.space/gradio_api/call/predict"
-
+# AUDIO_MODEL_URL = "https://sayantan090-wav2vec2-deepfake-voice-detector.hf.space/api/predict"
+AUDIO_MODEL_ID = "Sayantan090/wav2vec2-deepfake-voice-detector"
 # YOUR deployed Space API (Gradio 4+)
 IMAGE_MODEL_URL = "https://raktik-deepfake-detector-image.hf.space/gradio_api/call/predict"
