@@ -25,8 +25,9 @@ const NeuButton: React.FC<{ onClick?: () => void; children: React.ReactNode; pri
   return (
     <button
       onClick={onClick}
-      className={`px-8 py-4 font-black border-[3px] border-[#0a0a0a] rounded-lg shadow-[4px_4px_0_#0a0a0a] hover:-translate-y-[3px] hover:-translate-x-[3px] hover:shadow-[7px_7px_0_#0a0a0a] transition-all flex items-center justify-center gap-2 ${primary ? 'bg-[#1D4ED8] text-white' : 'bg-[#0a0a0a] text-white'
-        } ${className}`}
+      className={`px-8 py-4 font-black border-[3px] border-[#0a0a0a] rounded-lg shadow-[4px_4px_0_#0a0a0a] hover:-translate-y-[3px] hover:-translate-x-[3px] hover:shadow-[7px_7px_0_#0a0a0a] transition-all flex items-center justify-center gap-2 ${
+        primary ? 'bg-[#1D4ED8] text-white' : 'bg-[#0a0a0a] text-white'
+      } ${className}`}
     >
       {children}
     </button>
@@ -74,11 +75,15 @@ const Home: React.FC = () => {
           0%, 100% { margin-left: 0px; }
           50% { margin-left: -8px; }
         }
+        @keyframes gradientFlow {
+          0% { background-position: 0% center; }
+          100% { background-position: -200% center; }
+        }
         .float-a { animation: floatA 5s ease-in-out infinite; }
         .float-b { animation: floatB 6s ease-in-out infinite 1s; }
         .float-c { animation: floatC 7s ease-in-out infinite 2s; }
       `}</style>
-
+      
       {/* 1. HERO SECTION */}
       <section className="relative w-full min-h-[95vh] overflow-hidden flex flex-col items-center justify-center py-20 px-4">
         <InteractiveGridBackground />
@@ -97,21 +102,21 @@ const Home: React.FC = () => {
             position: "absolute", bottom: "15%", right: "5%", width: 60, height: 60, background: "#34D399", clipPath: "polygon(33% 0%,66% 0%,66% 33%,100% 33%,100% 66%,66% 66%,66% 100%,33% 100%,33% 66%,0% 66%,0% 33%,33% 33%)", opacity: 0.70, zIndex: 1
           }} />
           <div ref={shape5Ref} className="float-b" style={{
-            position: "absolute", bottom: "10%", left: "8%", width: 100, height: 45, background: "#F472B6", clipPath: "polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)", opacity: 0.65, zIndex: 1
+            position: "absolute", bottom: "10%", left: "8%", width: 100, height: 80, background: "#F472B6", clipPath: "polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)", opacity: 0.65, zIndex: 1
           }} />
           <div ref={shape6Ref} className="float-c" style={{
-            position: "absolute", top: "60%", right: "12%", width: 65, height: 65, background: "#FCD34D", clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)", opacity: 0.72, zIndex: 1
+            position: "absolute", top: "60%", right: "12%", width: 70, height: 70, background: "#FCD34D", clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)", opacity: 0.72, zIndex: 1
           }} />
         </div>
 
         <div className="relative z-10 max-w-4xl text-center flex flex-col items-center">
           <RevealBox index={0}>
-            <h1 className="text-7xl md:text-7xl lg:text-8xl font-semibold leading-tight tracking-40 mb-7">
-              <span style={{ color: "#1D4ED8" }}>Detect</span>{" "}
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 text-[#0a0a0a]" style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.02em" }}>
+              <span style={{ color: "#1D4ED8" }}>Detect</span>{" "} 
               <span style={{ color: "#0891B2" }}>Fake</span>{" "}
               <span style={{ color: "#7C3AED" }}>Content</span>{" "}
               <span style={{ color: "#DC2626" }}>in</span>{" "}
-              <span style={{ color: "#059669" }}>Seconds!</span>
+              <span style={{ color: "#bd4dbbff" }}>Seconds!</span>{" "}
             </h1>
           </RevealBox>
           <RevealBox index={1.5}>
@@ -123,7 +128,7 @@ const Home: React.FC = () => {
             <NeuButton onClick={() => navigate('/image')} primary={true}>
               Start Analyzing
             </NeuButton>
-            <NeuButton onClick={() => navigate('/about')} primary={false}>
+            <NeuButton primary={false}>
               Learn More
             </NeuButton>
           </RevealBox>
@@ -170,7 +175,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* 3. ZIGZAG SCROLL SECTIONS */}
-
+      
       {/* Section 1 */}
       <section className="w-full bg-[#D6EEFF] py-24 px-4 border-b-[3px] border-[#0a0a0a]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
@@ -201,12 +206,12 @@ const Home: React.FC = () => {
                       <span>85% Match</span>
                     </div>
                     <div className="w-full bg-[#FFFDF7] border-[3px] border-[#0a0a0a] h-6 rounded-full overflow-hidden">
-                      <div className="bg-[#1D4ED8] h-full w-[85%] border-r-[3px] border-[#0a0a0a]"></div>
+                       <div className="bg-[#1D4ED8] h-full w-[85%] border-r-[3px] border-[#0a0a0a]"></div>
                     </div>
                   </div>
                   <div className="mt-6 flex justify-between items-center p-4 bg-[#FAE8F0] border-[3px] border-[#0a0a0a] rounded-lg shadow-[2px_2px_0_#0a0a0a]">
-                    <span className="font-bold text-[#0a0a0a]">Verdict:</span>
-                    <span className="font-black text-red-600 uppercase">AI Generated</span>
+                     <span className="font-bold text-[#0a0a0a]">Verdict:</span>
+                     <span className="font-black text-red-600 uppercase">AI Generated</span>
                   </div>
                 </div>
               </div>
@@ -239,8 +244,8 @@ const Home: React.FC = () => {
                   <div className="absolute top-0 bottom-0 left-1/2 border-r-[3px] border-red-500 w-1 bg-gradient-to-r from-transparent to-red-500/20 shadow-[0_0_15px_red]"></div>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-[#FFFDF7] border-[3px] border-[#0a0a0a] rounded-lg shadow-[2px_2px_0_#0a0a0a]">
-                  <span className="font-black uppercase text-sm">Facial Inconsistency</span>
-                  <span className="font-black text-[#0a0a0a] text-lg">98% FAKE</span>
+                   <span className="font-black uppercase text-sm">Facial Inconsistency</span>
+                   <span className="font-black text-[#0a0a0a] text-lg">98% FAKE</span>
                 </div>
               </div>
             </RevealBox>

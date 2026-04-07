@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-[#FFFDF7] border-t-[3px] border-[#0a0a0a] w-full mt-auto py-10 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           
           {/* Brand & Tagline */}
           <div className="flex flex-col space-y-4">
@@ -31,15 +31,6 @@ const Footer: React.FC = () => {
             <h3 className="font-black text-[#0a0a0a] text-lg mb-2">Quick Links</h3>
             <Link to="/" className="font-bold text-[#374151] hover:text-[#2563eb] hover:translate-x-1 transition-transform w-max">Home</Link>
             <Link to="/about" className="font-bold text-[#374151] hover:text-[#2563eb] hover:translate-x-1 transition-transform w-max">About Us</Link>
-          </div>
-
-          {/* Tools */}
-          <div className="flex flex-col space-y-2">
-            <h3 className="font-black text-[#0a0a0a] text-lg mb-2">Tools</h3>
-            <Link to="/text" className="font-bold text-[#374151] hover:text-[#2563eb] hover:translate-x-1 transition-transform w-max">Text Analysis</Link>
-            <Link to="/image" className="font-bold text-[#374151] hover:text-[#2563eb] hover:translate-x-1 transition-transform w-max">Image Analysis</Link>
-            <Link to="/audio" className="font-bold text-[#374151] hover:text-[#2563eb] hover:translate-x-1 transition-transform w-max">Audio Analysis</Link>
-            <Link to="/video" className="font-bold text-[#374151] hover:text-[#2563eb] hover:translate-x-1 transition-transform w-max">Video Analysis</Link>
           </div>
 
         </div>

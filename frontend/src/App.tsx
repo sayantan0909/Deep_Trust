@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Home from './pages/Home'
@@ -12,6 +12,9 @@ import SplashScreen from './components/ui/SplashScreen'
 
 function App() {
   const [splashFinished, setSplashFinished] = useState(false);
+  const location = useLocation();
+  const hideFooterRoutes = ['/text', '/image', '/audio', '/video'];
+  const showFooter = !hideFooterRoutes.includes(location.pathname);
 
   return (
     <>
@@ -29,7 +32,7 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
           </Routes>
         </main>
-        <Footer />
+        {showFooter && <Footer />}
       </div>
     </>
   )
