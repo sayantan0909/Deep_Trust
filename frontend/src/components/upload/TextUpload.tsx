@@ -26,10 +26,7 @@ const TextUpload: React.FC<TextUploadProps> = ({ onAnalyze, loading }) => {
             onChange={(e) => setText(e.target.value)}
             disabled={loading}
           />
-          <div className="flex justify-between items-center p-2 mt-2">
-            <span className="text-xs text-gray-500 font-bold tracking-wide ml-2 uppercase">
-              Supports up to 512 tokens
-            </span>
+          <div className="flex justify-end items-center p-2 mt-2">
             <button
               type="submit"
               disabled={!text.trim() || loading}

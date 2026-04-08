@@ -25,8 +25,9 @@ const NeuButton: React.FC<{ onClick?: () => void; children: React.ReactNode; pri
   return (
     <button
       onClick={onClick}
-      className={`px-8 py-4 font-black border-[3px] border-[#0a0a0a] rounded-lg shadow-[4px_4px_0_#0a0a0a] hover:-translate-y-[3px] hover:-translate-x-[3px] hover:shadow-[7px_7px_0_#0a0a0a] transition-all flex items-center justify-center gap-2 ${primary ? 'bg-[#1D4ED8] text-white' : 'bg-[#0a0a0a] text-white'
-        } ${className}`}
+      className={`px-8 py-4 font-black border-[3px] border-[#0a0a0a] rounded-lg shadow-[4px_4px_0_#0a0a0a] hover:-translate-y-[3px] hover:-translate-x-[3px] hover:shadow-[7px_7px_0_#0a0a0a] transition-all flex items-center justify-center gap-2 ${
+        primary ? 'bg-[#1D4ED8] text-white' : 'bg-[#0a0a0a] text-white'
+      } ${className}`}
     >
       {children}
     </button>
@@ -61,7 +62,28 @@ const Home: React.FC = () => {
 
   return (
     <div className="w-full bg-[#F5F0E8] text-[#374151] overflow-x-hidden pt-8">
+<<<<<<<<< Temporary merge branch 1
+      <style>{`
+        @keyframes floatA {
+          0%, 100% { margin-top: 0px; }
+          50% { margin-top: -12px; }
+        }
+        @keyframes floatB {
+          0%, 100% { margin-top: 0px; }
+          50% { margin-top: 10px; }
+        }
+        @keyframes floatC {
+          0%, 100% { margin-left: 0px; }
+          50% { margin-left: -8px; }
+        }
+        .float-a { animation: floatA 5s ease-in-out infinite; }
+        .float-b { animation: floatB 6s ease-in-out infinite 1s; }
+        .float-c { animation: floatC 7s ease-in-out infinite 2s; }
+      `}</style>
       
+=========
+
+>>>>>>>>> Temporary merge branch 2
       {/* 1. HERO SECTION */}
       <section className="relative w-full min-h-[95vh] overflow-hidden flex flex-col items-center justify-center py-20 px-4">
         <InteractiveGridBackground />
@@ -153,7 +175,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* 3. ZIGZAG SCROLL SECTIONS */}
-
+      
       {/* Section 1 */}
       <section className="w-full bg-[#D6EEFF] py-24 px-4 border-b-[3px] border-[#0a0a0a]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
@@ -184,12 +206,12 @@ const Home: React.FC = () => {
                       <span>85% Match</span>
                     </div>
                     <div className="w-full bg-[#FFFDF7] border-[3px] border-[#0a0a0a] h-6 rounded-full overflow-hidden">
-                      <div className="bg-[#1D4ED8] h-full w-[85%] border-r-[3px] border-[#0a0a0a]"></div>
+                       <div className="bg-[#1D4ED8] h-full w-[85%] border-r-[3px] border-[#0a0a0a]"></div>
                     </div>
                   </div>
                   <div className="mt-6 flex justify-between items-center p-4 bg-[#FAE8F0] border-[3px] border-[#0a0a0a] rounded-lg shadow-[2px_2px_0_#0a0a0a]">
-                    <span className="font-bold text-[#0a0a0a]">Verdict:</span>
-                    <span className="font-black text-red-600 uppercase">AI Generated</span>
+                     <span className="font-bold text-[#0a0a0a]">Verdict:</span>
+                     <span className="font-black text-red-600 uppercase">AI Generated</span>
                   </div>
                 </div>
               </div>
@@ -222,8 +244,8 @@ const Home: React.FC = () => {
                   <div className="absolute top-0 bottom-0 left-1/2 border-r-[3px] border-red-500 w-1 bg-gradient-to-r from-transparent to-red-500/20 shadow-[0_0_15px_red]"></div>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-[#FFFDF7] border-[3px] border-[#0a0a0a] rounded-lg shadow-[2px_2px_0_#0a0a0a]">
-                  <span className="font-black uppercase text-sm">Facial Inconsistency</span>
-                  <span className="font-black text-[#0a0a0a] text-lg">98% FAKE</span>
+                   <span className="font-black uppercase text-sm">Facial Inconsistency</span>
+                   <span className="font-black text-[#0a0a0a] text-lg">98% FAKE</span>
                 </div>
               </div>
             </RevealBox>

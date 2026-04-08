@@ -27,11 +27,8 @@ export default function InteractiveGridBackground() {
       mouseY = -999;
     };
 
-    const parent = canvas.parentElement;
-    if (parent) {
-      parent.addEventListener('mousemove', handleMouseMove);
-      parent.addEventListener('mouseleave', handleMouseLeave);
-    }
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
 
     const CELL_COLORS = [
       "rgba(255, 182, 193, ",  // soft light pink
@@ -112,10 +109,8 @@ export default function InteractiveGridBackground() {
     return () => {
       cancelAnimationFrame(animationId);
       resizeObserver.disconnect();
-      if (parent) {
-        parent.removeEventListener('mousemove', handleMouseMove);
-        parent.removeEventListener('mouseleave', handleMouseLeave);
-      }
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);
 

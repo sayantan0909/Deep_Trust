@@ -198,11 +198,11 @@ const Navbar: React.FC = () => {
                 Tools
                 <span className="absolute bottom-[-2px] left-0 h-[2px] w-0 bg-gradient-to-r from-blue-700 to-indigo-600 transition-all duration-300 group-hover:w-full rounded-full"></span>
               </span>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white/90 backdrop-blur-xl border border-black/10 rounded-xl shadow-xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out z-50">
-                <Link to="/text" className="block px-4 py-2 text-sm font-medium hover:bg-slate-100 rounded-lg transition-colors">Text Detection</Link>
-                <Link to="/image" className="block px-4 py-2 text-sm font-medium hover:bg-slate-100 rounded-lg transition-colors">Image Detection</Link>
-                <Link to="/audio" className="block px-4 py-2 text-sm font-medium hover:bg-slate-100 rounded-lg transition-colors">Audio Detection</Link>
-                <Link to="/video" className="block px-4 py-2 text-sm font-medium hover:bg-slate-100 rounded-lg transition-colors">Video Detection</Link>
+              <div className="absolute top-full left-0 mt-3 w-52 bg-[#FFFDF7] border-[3px] border-[#0a0a0a] rounded-lg shadow-[4px_4px_0_#0a0a0a] p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out z-50 flex flex-col gap-1">
+                <Link to="/text" className="block px-4 py-2 text-sm font-bold text-[#0a0a0a] hover:bg-[#D6EEFF] hover:border-[#0a0a0a] hover:-translate-y-[1px] hover:-translate-x-[1px] hover:shadow-[2px_2px_0_#0a0a0a] border-[2px] border-transparent rounded transition-all">Text Detection</Link>
+                <Link to="/image" className="block px-4 py-2 text-sm font-bold text-[#0a0a0a] hover:bg-[#E8E4F8] hover:border-[#0a0a0a] hover:-translate-y-[1px] hover:-translate-x-[1px] hover:shadow-[2px_2px_0_#0a0a0a] border-[2px] border-transparent rounded transition-all">Image Detection</Link>
+                <Link to="/audio" className="block px-4 py-2 text-sm font-bold text-[#0a0a0a] hover:bg-[#D4F3F7] hover:border-[#0a0a0a] hover:-translate-y-[1px] hover:-translate-x-[1px] hover:shadow-[2px_2px_0_#0a0a0a] border-[2px] border-transparent rounded transition-all">Audio Detection</Link>
+                <Link to="/video" className="block px-4 py-2 text-sm font-bold text-[#0a0a0a] hover:bg-[#FAE8F0] hover:border-[#0a0a0a] hover:-translate-y-[1px] hover:-translate-x-[1px] hover:shadow-[2px_2px_0_#0a0a0a] border-[2px] border-transparent rounded transition-all">Video Detection</Link>
               </div>
             </div>
 

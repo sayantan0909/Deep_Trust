@@ -1,252 +1,79 @@
-import React, { useCallback, useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import InteractiveGridBackground from '../InteractiveGridBackground';
 
 interface GeometricBackgroundProps {
   variant?: 'text' | 'image' | 'audio' | 'video';
 }
 
-/* ─── Interactive Grid (single cell highlight) ─── */
-const CELL = 48;
-
-const InteractiveGrid: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const cells = useRef<Map<string, { alpha: number; color: string }>>(new Map());
-  const animFrame = useRef<number>(0);
-
-  const palette = ['#FBBF24', '#60A5FA', '#A78BFA', '#F472B6', '#34D399', '#FB923C', '#67E8F9'];
-  const getColor = () => palette[Math.floor(Math.random() * palette.length)];
-
-  const handleMouse = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const col = Math.floor(x / CELL);
-    const row = Math.floor(y / CELL);
-    const key = `${col},${row}`;
-
-    // Only light up the single cell under cursor
-    if (!cells.current.has(key)) {
-      cells.current.set(key, { alpha: 0.5, color: getColor() });
-    } else {
-      const cell = cells.current.get(key)!;
-      cell.alpha = 0.5;
-    }
-  }, []);
+const GeometricBackground: React.FC<GeometricBackgroundProps> = ({ variant }) => {
+  const shape1Ref = useRef<HTMLDivElement>(null);
+  const shape2Ref = useRef<HTMLDivElement>(null);
+  const shape3Ref = useRef<HTMLDivElement>(null);
+  const shape4Ref = useRef<HTMLDivElement>(null);
+  const shape5Ref = useRef<HTMLDivElement>(null);
+  const shape6Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resize = () => {
-      const parent = canvas.parentElement;
-      if (parent) {
-        canvas.width = parent.clientWidth;
-        canvas.height = parent.clientHeight;
-      }
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      if (shape1Ref.current) shape1Ref.current.style.transform = `rotate(${15 + scrollY * 0.08}deg) translateY(${scrollY * -0.25}px)`;
+      if (shape2Ref.current) shape2Ref.current.style.transform = `translateY(${scrollY * 0.18}px) translateX(${scrollY * 0.06}px)`;
+      if (shape3Ref.current) shape3Ref.current.style.transform = `translateY(${scrollY * -0.15}px) rotate(${scrollY * 0.05}deg)`;
+      if (shape4Ref.current) shape4Ref.current.style.transform = `translateY(${scrollY * 0.22}px) rotate(${scrollY * -0.07}deg)`;
+      if (shape5Ref.current) shape5Ref.current.style.transform = `translateX(${scrollY * -0.12}px) translateY(${scrollY * 0.1}px)`;
+      if (shape6Ref.current) shape6Ref.current.style.transform = `translateY(${scrollY * -0.20}px) scale(${1 + scrollY * 0.0003})`;
     };
-    resize();
-    window.addEventListener('resize', resize);
 
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Grid lines
-      ctx.strokeStyle = 'rgba(180, 175, 165, 0.35)';
-      ctx.lineWidth = 1;
-      for (let x = 0; x <= canvas.width; x += CELL) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = 0; y <= canvas.height; y += CELL) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
-      // Highlighted cells
-      const toDelete: string[] = [];
-      cells.current.forEach((cell, key) => {
-        const [col, row] = key.split(',').map(Number);
-        ctx.fillStyle = cell.color;
-        ctx.globalAlpha = cell.alpha;
-        ctx.fillRect(col * CELL, row * CELL, CELL, CELL);
-        ctx.globalAlpha = 1;
-        cell.alpha -= 0.008;
-        if (cell.alpha <= 0) toDelete.push(key);
-      });
-      toDelete.forEach(k => cells.current.delete(k));
-
-      animFrame.current = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      window.removeEventListener('resize', resize);
-      cancelAnimationFrame(animFrame.current);
-    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full"
-      onMouseMove={handleMouse}
-      style={{ pointerEvents: 'auto' }}
-    />
-  );
-};
-
-/* ─── Drifting Shape (moves across the whole page) ─── */
-interface DriftingShapeProps {
-  children: React.ReactNode;
-  duration: number;  // seconds for one full cycle
-  pathIndex: number; // which path pattern to use
-}
-
-const paths = [
-  // Each path is a set of keyframe percentages with x%, y% positions
-  { name: 'drift-a', keyframes: `
-    0%   { transform: translate(5vw, 8vh) rotate(0deg); }
-    20%  { transform: translate(75vw, 15vh) rotate(45deg); }
-    40%  { transform: translate(60vw, 70vh) rotate(90deg); }
-    60%  { transform: translate(10vw, 55vh) rotate(180deg); }
-    80%  { transform: translate(40vw, 5vh) rotate(270deg); }
-    100% { transform: translate(5vw, 8vh) rotate(360deg); }
-  `},
-  { name: 'drift-b', keyframes: `
-    0%   { transform: translate(80vw, 10vh) rotate(0deg); }
-    25%  { transform: translate(15vw, 35vh) rotate(-60deg); }
-    50%  { transform: translate(70vw, 65vh) rotate(-120deg); }
-    75%  { transform: translate(25vw, 10vh) rotate(-240deg); }
-    100% { transform: translate(80vw, 10vh) rotate(-360deg); }
-  `},
-  { name: 'drift-c', keyframes: `
-    0%   { transform: translate(50vw, 5vh) rotate(0deg); }
-    20%  { transform: translate(85vw, 40vh) rotate(30deg); }
-    45%  { transform: translate(55vw, 80vh) rotate(80deg); }
-    65%  { transform: translate(8vw, 45vh) rotate(150deg); }
-    85%  { transform: translate(30vw, 10vh) rotate(280deg); }
-    100% { transform: translate(50vw, 5vh) rotate(360deg); }
-  `},
-  { name: 'drift-d', keyframes: `
-    0%   { transform: translate(10vw, 70vh) rotate(0deg); }
-    30%  { transform: translate(65vw, 8vh) rotate(60deg); }
-    50%  { transform: translate(85vw, 55vh) rotate(120deg); }
-    70%  { transform: translate(20vw, 80vh) rotate(200deg); }
-    100% { transform: translate(10vw, 70vh) rotate(360deg); }
-  `},
-  { name: 'drift-e', keyframes: `
-    0%   { transform: translate(90vw, 50vh) rotate(0deg); }
-    25%  { transform: translate(30vw, 75vh) rotate(-45deg); }
-    50%  { transform: translate(5vw, 20vh) rotate(-90deg); }
-    75%  { transform: translate(60vw, 5vh) rotate(-200deg); }
-    100% { transform: translate(90vw, 50vh) rotate(-360deg); }
-  `},
-  { name: 'drift-f', keyframes: `
-    0%   { transform: translate(40vw, 80vh) rotate(0deg); }
-    20%  { transform: translate(80vw, 30vh) rotate(50deg); }
-    50%  { transform: translate(15vw, 10vh) rotate(130deg); }
-    75%  { transform: translate(55vw, 60vh) rotate(250deg); }
-    100% { transform: translate(40vw, 80vh) rotate(360deg); }
-  `},
-  { name: 'drift-g', keyframes: `
-    0%   { transform: translate(20vw, 20vh) rotate(0deg); }
-    30%  { transform: translate(70vw, 60vh) rotate(70deg); }
-    60%  { transform: translate(90vw, 15vh) rotate(160deg); }
-    80%  { transform: translate(35vw, 75vh) rotate(260deg); }
-    100% { transform: translate(20vw, 20vh) rotate(360deg); }
-  `},
-];
-
-const DriftingShape: React.FC<DriftingShapeProps> = ({ children, duration, pathIndex }) => {
-  const path = paths[pathIndex % paths.length];
-  return (
     <>
-      <style>{`@keyframes ${path.name} { ${path.keyframes} }`}</style>
-      <div
-        className="absolute top-0 left-0 pointer-events-none"
-        style={{
-          animation: `${path.name} ${duration}s ease-in-out infinite`,
-          willChange: 'transform',
-        }}
-      >
-        {children}
+      <style>{`
+        @keyframes floatA {
+          0%, 100% { margin-top: 0px; }
+          50% { margin-top: -12px; }
+        }
+        @keyframes floatB {
+          0%, 100% { margin-top: 0px; }
+          50% { margin-top: 10px; }
+        }
+        @keyframes floatC {
+          0%, 100% { margin-left: 0px; }
+          50% { margin-left: -8px; }
+        }
+        .float-a { animation: floatA 5s ease-in-out infinite; }
+        .float-b { animation: floatB 6s ease-in-out infinite 1s; }
+        .float-c { animation: floatC 7s ease-in-out infinite 2s; }
+      `}</style>
+      
+      <div className="absolute inset-0 overflow-hidden z-0">
+        <InteractiveGridBackground />
+
+        {/* Floating Geometric Shapes */}
+        <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
+          <div ref={shape1Ref} className="float-a" style={{
+            position: "absolute", top: "8%", left: "4%", width: 90, height: 90, background: "#FBBF24", clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)", opacity: 0.75, transform: "rotate(15deg)", zIndex: 1
+          }} />
+          <div ref={shape2Ref} className="float-b" style={{
+            position: "absolute", top: "12%", right: "6%", width: 80, height: 80, background: "#60A5FA", clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)", opacity: 0.70, zIndex: 1
+          }} />
+          <div ref={shape3Ref} className="float-c" style={{
+            position: "absolute", top: "45%", left: "2%", width: 70, height: 70, background: "#A78BFA", clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)", opacity: 0.65, zIndex: 1
+          }} />
+          <div ref={shape4Ref} className="float-a" style={{
+            position: "absolute", bottom: "15%", right: "5%", width: 60, height: 60, background: "#34D399", clipPath: "polygon(33% 0%,66% 0%,66% 33%,100% 33%,100% 66%,66% 66%,66% 100%,33% 100%,33% 66%,0% 66%,0% 33%,33% 33%)", opacity: 0.70, zIndex: 1
+          }} />
+          <div ref={shape5Ref} className="float-b" style={{
+            position: "absolute", bottom: "10%", left: "8%", width: 100, height: 45, background: "#F472B6", clipPath: "polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)", opacity: 0.65, zIndex: 1
+          }} />
+          <div ref={shape6Ref} className="float-c" style={{
+            position: "absolute", top: "60%", right: "12%", width: 65, height: 65, background: "#FCD34D", clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)", opacity: 0.72, zIndex: 1
+          }} />
+        </div>
       </div>
     </>
-  );
-};
-
-/* ─── Main Component ─── */
-const GeometricBackground: React.FC<GeometricBackgroundProps> = ({ variant = 'text' }) => {
-
-  // Shared pool of shapes, each variant picks slightly different durations
-  const baseDurations: Record<string, number[]> = {
-    text:  [28, 35, 22, 40, 32, 26, 38],
-    image: [32, 25, 38, 30, 28, 42, 34],
-    audio: [26, 38, 30, 34, 22, 36, 28],
-    video: [34, 28, 42, 26, 36, 30, 24],
-  };
-
-  const durations = baseDurations[variant];
-
-  return (
-    <div className="absolute inset-0 overflow-hidden z-0">
-      {/* Interactive Grid Canvas */}
-      <InteractiveGrid />
-
-      {/* Drifting shapes layer */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Yellow diamond */}
-        <DriftingShape duration={durations[0]} pathIndex={0}>
-          <div className="w-14 h-14 bg-[#FBBF24] border-[3px] border-[#0a0a0a] rotate-45 opacity-50 shadow-[3px_3px_0_#0a0a0a]" />
-        </DriftingShape>
-
-        {/* Purple rounded square */}
-        <DriftingShape duration={durations[1]} pathIndex={1}>
-          <div className="w-12 h-12 bg-[#A78BFA] border-[3px] border-[#0a0a0a] rounded-lg opacity-45 shadow-[3px_3px_0_#0a0a0a]" />
-        </DriftingShape>
-
-        {/* Blue triangle */}
-        <DriftingShape duration={durations[2]} pathIndex={2}>
-          <div style={{
-            width: 0, height: 0,
-            borderLeft: '24px solid transparent',
-            borderRight: '24px solid transparent',
-            borderBottom: '42px solid #60A5FA',
-            filter: 'drop-shadow(3px 3px 0 #0a0a0a)',
-            opacity: 0.5,
-          }} />
-        </DriftingShape>
-
-        {/* Pink parallelogram */}
-        <DriftingShape duration={durations[3]} pathIndex={3}>
-          <div className="w-16 h-10 bg-[#F472B6] border-[3px] border-[#0a0a0a] -skew-x-12 opacity-45 shadow-[3px_3px_0_#0a0a0a] rounded-sm" />
-        </DriftingShape>
-
-        {/* Green cross */}
-        <DriftingShape duration={durations[4]} pathIndex={4}>
-          <div className="relative w-10 h-10 opacity-50">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-10 bg-[#34D399] border-[2px] border-[#0a0a0a] rounded-sm" />
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-10 h-3 bg-[#34D399] border-[2px] border-[#0a0a0a] rounded-sm" />
-          </div>
-        </DriftingShape>
-
-        {/* Yellow star */}
-        <DriftingShape duration={durations[5]} pathIndex={5}>
-          <div className="text-[#FBBF24] opacity-50 text-3xl font-black" style={{ textShadow: '2px 2px 0 #0a0a0a' }}>✦</div>
-        </DriftingShape>
-
-        {/* Orange circle */}
-        <DriftingShape duration={durations[6]} pathIndex={6}>
-          <div className="w-8 h-8 bg-[#FB923C] border-[2px] border-[#0a0a0a] rounded-full opacity-40 shadow-[2px_2px_0_#0a0a0a]" />
-        </DriftingShape>
-      </div>
-    </div>
   );
 };
 

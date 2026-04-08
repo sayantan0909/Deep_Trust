@@ -7,12 +7,14 @@ import TextAnalysis from './pages/TextAnalysis'
 import ImageAnalysis from './pages/ImageAnalysis'
 import AudioAnalysis from './pages/AudioAnalysis'
 import VideoAnalysis from './pages/VideoAnalysis'
+import AboutPage from './pages/About'
 import SplashScreen from './components/ui/SplashScreen'
 
 function App() {
   const [splashFinished, setSplashFinished] = useState(false);
   const location = useLocation();
-  const isHome = location.pathname === '/';
+  const hideFooterRoutes = ['/text', '/image', '/audio', '/video'];
+  const showFooter = !hideFooterRoutes.includes(location.pathname);
 
   return (
     <>
@@ -20,16 +22,17 @@ function App() {
       
       <div className={`flex flex-col min-h-screen ${!splashFinished ? 'h-screen overflow-hidden' : ''}`}>
         <Navbar />
-        <main className={`flex-1 w-full flex flex-col ${!isHome ? 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8' : ''}`}>
+        <main className="flex-1 w-full flex flex-col">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/text" element={<TextAnalysis />} />
             <Route path="/image" element={<ImageAnalysis />} />
             <Route path="/audio" element={<AudioAnalysis />} />
             <Route path="/video" element={<VideoAnalysis />} />
+            <Route path="/about" element={<AboutPage />} />
           </Routes>
         </main>
-        <Footer />
+        {showFooter && <Footer />}
       </div>
     </>
   )
