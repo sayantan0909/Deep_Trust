@@ -7,9 +7,10 @@ FastAPI server powered by HuggingFace inference API and local pipelines.
 🪟 Windows
 ```bash
 cd backend
-python -m venv venv
+python -m venv venv ( py -3.11 -m venv venv)
 venv\Scripts\Activate
 pip install -r requirements.txt
+pip install transformers torch librosa
 copy .env.example .env
 uvicorn app.main:app --reload --port 8000
 ```
