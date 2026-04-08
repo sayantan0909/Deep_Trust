@@ -8,28 +8,27 @@ interface ConfidenceBarProps {
 const ConfidenceBar: React.FC<ConfidenceBarProps> = ({ confidence, isFake }) => {
   const getColor = () => {
     if (isFake) {
-      if (confidence > 80) return 'from-rose-600 to-red-500';
-      if (confidence > 60) return 'from-orange-500 to-rose-400';
-      return 'from-amber-400 to-orange-400';
+      if (confidence > 80) return 'bg-[#e11d48]';
+      if (confidence > 60) return 'bg-[#f97316]';
+      return 'bg-[#eab308]';
     } else {
-      if (confidence > 80) return 'from-emerald-600 to-teal-400';
-      if (confidence > 60) return 'from-green-500 to-emerald-400';
-      return 'from-lime-400 to-green-400';
+      if (confidence > 80) return 'bg-[#16a34a]';
+      if (confidence > 60) return 'bg-[#22c55e]';
+      return 'bg-[#84cc16]';
     }
   };
 
   return (
     <div className="w-full">
       <div className="flex justify-between items-end mb-2">
-        <span className="text-sm font-medium text-slate-300 uppercase tracking-wider">Confidence Score</span>
-        <span className="text-2xl font-bold text-white">{confidence.toFixed(1)}%</span>
+        <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Confidence Score</span>
+        <span className="text-2xl font-black text-[#0a0a0a]">{confidence.toFixed(1)}%</span>
       </div>
-      <div className="w-full bg-slate-800 rounded-full h-3.5 backdrop-blur-sm shadow-inner overflow-hidden border border-slate-700/50">
-        <div 
-          className={`h-full rounded-full bg-gradient-to-r ${getColor()} transition-all duration-1000 ease-out relative`} 
+      <div className="w-full bg-[#F5F0E8] rounded-full h-5 border-[3px] border-[#0a0a0a] overflow-hidden">
+        <div
+          className={`h-full ${getColor()} transition-all duration-1000 ease-out`}
           style={{ width: `${Math.max(5, confidence)}%` }}
         >
-          <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
         </div>
       </div>
     </div>
