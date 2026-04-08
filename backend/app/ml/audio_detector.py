@@ -1,35 +1,63 @@
-import numpy as np
-import soundfile as sf
+import torch
 import librosa
-import io
-from app.ml.model_loader import get_model
+import tempfile
+import os
+from transformers import AutoModelForAudioClassification, AutoFeatureExtractor
+
+model_name = "Sayantan090/wav2vec2-deepfake-voice-detector"
+
+model = AutoModelForAudioClassification.from_pretrained(model_name)
+feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
+
+model.eval()
 
 def detect_fake_audio(file_bytes: bytes) -> dict:
-    """
-    Runs locally loaded Wav2Vec2 deepfake audio detector.
-    Pipeline: raw bytes → resample to 16kHz → model → label + score
-    """
-    # Load audio from bytes (supports .wav, .mp3, .flac)
-    audio_array, sample_rate = sf.read(io.BytesIO(file_bytes))
+    try:
+        # ✅ create temp file WITHOUT lock
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+            tmp.write(file_bytes)
+            temp_path = tmp.name
 
-    # Ensure mono channel
-    if audio_array.ndim > 1:
-        audio_array = audio_array.mean(axis=1)
+        # ✅ now load safely
+        audio, sr = librosa.load(temp_path, sr=16000)
 
-    # Resample to 16000Hz (model requirement)
-    if sample_rate != 16000:
-        audio_array = librosa.resample(audio_array, orig_sr=sample_rate, target_sr=16000)
+        # cleanup (VERY IMPORTANT)
+        os.remove(temp_path)
 
-    # Run through locally loaded pipeline
-    model = get_model("audio")
-    results = model({"raw": audio_array, "sampling_rate": 16000}, top_k=2)
+        inputs = feature_extractor(
+            audio,
+            sampling_rate=16000,
+            return_tensors="pt",
+            padding=True
+        )
 
-    top = results[0]
-    label = "FAKE" if "fake" in top["label"].lower() or "spoof" in top["label"].lower() else "REAL"
+        with torch.no_grad():
+            outputs = model(**inputs)
+            probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
 
-    return {
-        "label": label,
-        "confidence": round(top["score"] * 100, 1),
-        "reason": f"Audio classified as {label} based on voice pattern analysis",
-        "all_scores": {r["label"]: round(r["score"]*100, 1) for r in results}
-    }
+        real_score = probs[0][0].item()
+        fake_score = probs[0][1].item()
+
+        label = "FAKE" if fake_score > real_score else "REAL"
+
+        return {
+            "label": label,
+            "confidence": round(max(fake_score, real_score) * 100, 1),
+            "fake_score": round(fake_score, 4),
+            "real_score": round(real_score, 4),
+            "reason": f"Voice pattern analysis detected {label} audio",
+            "all_scores": {
+                "FAKE": round(fake_score * 100, 1),
+                "REAL": round(real_score * 100, 1)
+            }
+        }
+
+    except Exception as e:
+        return {
+            "label": "ERROR",
+            "confidence": 0,
+            "fake_score": 0.0,
+            "real_score": 0.0,
+            "reason": str(e),
+            "all_scores": {}
+        }

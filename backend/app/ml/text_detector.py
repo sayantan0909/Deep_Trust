@@ -1,38 +1,45 @@
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import torch
-import torch.nn.functional as F
-
-# HuggingFace model path
-MODEL_PATH = "Sayantan090/fake-news-detector"
-
-# Load model once
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
-
-model.eval()
+import requests
+from app.config import TEXT_MODEL_URL, HF_HEADERS
 
 def detect_fake_text(text: str) -> dict:
+    """
+    Sends text to the HuggingFace Inference API (Sayantan090/fake-news-detector).
+    Returns: { label, confidence, reason, all_scores }
+    """
     try:
-        inputs = tokenizer(
-            text,
-            return_tensors="pt",
-            truncation=True,
-            padding=True,
-            max_length=128
+        response = requests.post(
+            TEXT_MODEL_URL,
+            headers=HF_HEADERS,
+            json={"inputs": text},
+            timeout=30
         )
+        response.raise_for_status()
+        result = response.json()
 
-        with torch.no_grad():
-            outputs = model(**inputs)
+        # HF Inference API returns a list of [{"label": ..., "score": ...}]
+        # Some models return a nested list [[{...}]]
+        if isinstance(result, list) and len(result) > 0:
+            scores_list = result[0] if isinstance(result[0], list) else result
+        else:
+            raise ValueError(f"Unexpected API response format: {result}")
 
-        probs = F.softmax(outputs.logits, dim=-1)
+        # Build scores dict — normalize label keys to FAKE / REAL
+        all_scores = {}
+        for item in scores_list:
+            key = item["label"].upper()
+            # Handle varied label conventions: LABEL_0/LABEL_1, fake/real, etc.
+            if key in ("LABEL_0", "FAKE", "FALSE", "MISLEADING"):
+                all_scores["FAKE"] = round(item["score"] * 100, 1)
+            elif key in ("LABEL_1", "REAL", "TRUE", "LEGITIMATE"):
+                all_scores["REAL"] = round(item["score"] * 100, 1)
+            else:
+                all_scores[key] = round(item["score"] * 100, 1)
 
-        fake_prob = probs[0][0].item()
-        real_prob = probs[0][1].item()
-
-        pred = torch.argmax(probs).item()
-        confidence = probs[0][pred].item()
-
-        label = "FAKE" if pred == 0 else "REAL"
+        # Pick the winning label
+        fake_score = all_scores.get("FAKE", 0.0)
+        real_score = all_scores.get("REAL", 0.0)
+        label = "FAKE" if fake_score >= real_score else "REAL"
+        confidence = max(fake_score, real_score)
 
         reason = (
             "Detected patterns of misinformation or exaggeration."
@@ -42,12 +49,9 @@ def detect_fake_text(text: str) -> dict:
 
         return {
             "label": label,
-            "confidence": round(confidence * 100, 1),
+            "confidence": confidence,
             "reason": reason,
-            "all_scores": {
-                "FAKE": round(fake_prob * 100, 1),
-                "REAL": round(real_prob * 100, 1)
-            }
+            "all_scores": all_scores
         }
 
     except Exception as e:
