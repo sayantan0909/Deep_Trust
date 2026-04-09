@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: deeptrust-backend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: HF_API_KEY
+        sync: false

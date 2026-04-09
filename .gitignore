@@ -1,0 +1,24 @@
+# Ignore temp, models and env
+/backend/models/*
+!/backend/models/.gitkeep
+/backend/temp/*
+!/backend/temp/.gitkeep
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Vite Node modules
+frontend/node_modules/
+frontend/dist/
